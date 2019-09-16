@@ -32,4 +32,5 @@
     <context:component-scan base-package="service.Impl"></context:component-scan>
     <context:component-scan base-package="dao"></context:component-scan>
 	<import resource="classpath:applicationContext-dao.xml"/>
+	<import resource="classpath:shiro.xml"/>
 </beans>

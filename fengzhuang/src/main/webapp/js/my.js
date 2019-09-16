@@ -8,8 +8,8 @@ function closeFrame(){
 	  parent.layer.close(index); 
 }
 function openFrame(url,title,area){
-	if(!title) title="編輯";
-	if(!area)area=['340px', '60%'];
+	if(!title) title="编辑";
+	if(!area)area=['80%', '80%'];
 	layer.open({
 		  type: 2,
 		  title: title,
@@ -47,6 +47,19 @@ function getlist(url,data,selector,def_id){
 			}
 			layui.form.render('select');
 		},"json");
+}
+
+function getUstatulist(url,data,selector,def_id){
+	$.post(url,data, function(json) {
+		var s=$(selector).empty();
+		s.append($("<option value=''></option>"))
+		for(var i=0;i<json.length;i++){
+			var ss="";
+			if(json[i].id==def_id) ss="selected='selected'";
+			s.append($("<option value='"+json[i].id+"' "+ss+" >"+json[i].ustatuname+"</option>"))
+		}
+		layui.form.render('select');
+	},"json");
 }
 
 function getarray(url,data,selector,def_index){

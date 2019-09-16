@@ -2,17 +2,10 @@ package service.Impl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
-import dao.BookDao;
-import entity.Book;
-import entity.Type;
-import service.BookService;
 import service.basicService;
 import utils.ReturnInfo;
 
@@ -38,6 +31,21 @@ private Object execDao(String mname,Object... objs){
 	}
 	
 }
+
+
+private String getTname() {
+	return getRealType().getSimpleName();
+}
+
+public Class getRealType(){
+	// 获取当前new的对象的泛型的父类类型
+	ParameterizedType pt = (ParameterizedType) this.getClass().getGenericSuperclass();
+	// 获取第一个类型参数的真实类型
+	return (Class<T>) pt.getActualTypeArguments()[0];
+}
+
+
+
 
 public List<T> getWhere(String where) {
 	Object o=execDao("getWhere", where);
@@ -77,7 +85,7 @@ public Integer update(T t) {
 
 public ReturnInfo select(String txt, Integer page, Integer limit) {
 	if(txt==null||txt.length()==0) txt="";
-	else txt="where book.name like '%"+txt+"%'";
+	else txt="where "+getTname()+".name like '%"+txt+"%'";
 	ReturnInfo info = new ReturnInfo();
 	String limitstr="";
 	if(page!=null) {
